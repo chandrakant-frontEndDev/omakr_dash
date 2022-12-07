@@ -17,16 +17,17 @@ export default function dashboard() {
                         backgroundColor: '#e3f2fd',
                         padding:'1em',
                         borderRadius: '15px',
+                        boxShadow: '0px 0px 2px #ababab',
                     }}>
                         <Grid item lg={6}>
                             {/* <Paper sx={{
                                 width: '100%',
                                 padding: '1em',
                             }}> */}
-                                <Typography component={'h5'} variant="h5">
+                                <Typography component={'h5'} variant="h5" sx={{fontWeight: 'bold'}}>
                                     Welcome User 👋🏻
                                 </Typography>
-                                <Typography component={'p'} variant='p' fontSize="medium" pt={'1em'}>
+                                <Typography component={'p'} variant='p' fontSize="medium" pt={'1em'} color={'#004979'}>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi temporibus perferendis dolore sed sint autem magni natus omnis molestias maxime ipsum, esse vero, repudiandae rerum atque provident neque ea reiciendis?
                                 </Typography>
                             {/* </Paper> */}

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Grid, Toolbar, Paper, Box, TextField, Typography, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -65,8 +65,13 @@ export default function Home() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const email = (e) =>{
-    console.log(e.target.value);
+
+  // ============================================ Login Validation =============================================
+  const [EmailState, setEmailState] = useState(false)
+  const email = (e) => {
+    let pattern = /[A-Za-z0-9]+@[A-Za-z0-9.-]+[A-Z|a-z]{2,}/ym
+    let validEmail = pattern.test(e.target.value)
+    setEmailState(!validEmail)
   }
   return (
     <>
@@ -102,7 +107,7 @@ export default function Home() {
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
                   Welcome to Omkar Development! 👋🏻
                 </Typography>
-                <TextField id="outlined-basic" label="Email" type={'email'} variant="outlined" onChange={email} />
+                <TextField id="outlined-basic" label="Email" type={'email'} variant="outlined" error={EmailState} onChange={email} />
                 {/* <input type={'text'}  {...register("password", {
                       required: 'Password is Required',
                       minLength: {
@@ -110,7 +115,7 @@ export default function Home() {
                         message: "Minimum password length is 6"
                       }
                     })}/> */}
-                {errors.email && (<small style={{ fontSize: "14px" }} className='text-danger contact_form_error'>{errors.email.message}</small>)}
+                {/* {errors.email && (<small style={{ fontSize: "14px" }} className='text-danger contact_form_error'>{errors.email.message}</small>)} */}
                 {/* <TextField id="outlined-basic" label="Password" type={'password'} variant="outlined" /> */}
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -119,7 +124,7 @@ export default function Home() {
                     type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
                     onChange={handleChange('password')}
-                   
+                    autoComplete="off"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

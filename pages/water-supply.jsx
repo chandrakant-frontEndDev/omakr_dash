@@ -108,7 +108,7 @@ const rows = [
     createData(10, 'Mr. J', 'dummy address goes here , 50 | B-12', 'demo@gmail.com', 'XXXXX-XXXXX'),
 ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
-export default function electricity() {
+export default function waterSupply() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -175,7 +175,6 @@ export default function electricity() {
                                             </Button>
                                         </Link>
                                     </TableCell>
-
                                 </TableRow>
                             ))}
 

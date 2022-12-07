@@ -29,9 +29,31 @@ import WaterIcon from '@mui/icons-material/Water';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import Logo from '../../public/logo.png';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Link from 'next/link';
 const drawerWidth = 240;
 
 function MyLayout({ children }, props) {
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleCloseLogout = () => {
+        setAnchorEl(null);
+        //logout function goes here
+    }
+
+    // ==================================================== 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -72,22 +94,22 @@ function MyLayout({ children }, props) {
                         height: '100%',
                         padding: '1em 0em',
                     }}
-                alt="Your logo."
-                src={Logo.src}
+                    alt="Your logo."
+                    src={Logo.src}
                 />
             </Toolbar>
             <Divider />
             <List>
                 {listItemsData.map(({ name, url, icon }, index) => (
                     <ListItem key={index} disablePadding>
-                        <ListItemButton onClick={() => {
-                            router.push(url)
-                        }}>
-                            <ListItemIcon>
-                                {icon}
-                            </ListItemIcon>
-                            <ListItemText primary={name} />
-                        </ListItemButton>
+                        <Link href={url} style={{ width: '100%' }}>
+                            <ListItemButton >
+                                <ListItemIcon>
+                                    {icon}
+                                </ListItemIcon>
+                                <ListItemText primary={name} />
+                            </ListItemButton>
+                        </Link>
                     </ListItem>
                 ))}
                 <ListItemButton onClick={ServiceHandleClickToggle}>
@@ -172,9 +194,48 @@ function MyLayout({ children }, props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         Omkar Development
                     </Typography>
+                    <div>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                            sx={{ top: '35px' }}
+                        >
+                            <MenuItem onClick={handleClose}>
+                                <Link href={'/profile'} style={{ textDecoration: "none", color: '#000' }}>
+                                    Profile
+                                </Link>
+                            </MenuItem>
+                            <MenuItem onClick={handleCloseLogout}>
+                                <Link href={'/'} style={{ textDecoration: "none", color: '#000' }}>
+                                    Logout
+                                </Link>
+                            </MenuItem>
+                        </Menu>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Box
