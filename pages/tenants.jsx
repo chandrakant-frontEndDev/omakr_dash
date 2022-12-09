@@ -128,12 +128,12 @@ export default function CustomPaginationActionsTable() {
     return (
 
         <Grid container spacing={2} justifyContent="center" >
-            <Grid item lg={12} xs={12}>
+            <Grid item lg={12} xs={11}>
                 <Toolbar />
                 <Toolbar />
                 <h1>Tenants List</h1>
             </Grid>
-            <Grid item lg={12} xs={12}>
+            <Grid item lg={12} xs={11}>
                 <TableContainer component={Paper}>
 
                     <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -159,7 +159,7 @@ export default function CustomPaginationActionsTable() {
                                     <TableCell component="th" scope="row">
                                         {row.TenantName}
                                     </TableCell>
-                                    <TableCell component="th" scope="row" align="right">
+                                    <TableCell  component="th" scope="row" align="right">
                                         {row.Address}
                                     </TableCell>
                                     <TableCell component="th" scope="row" align="right">
@@ -188,7 +188,7 @@ export default function CustomPaginationActionsTable() {
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                    colSpan={3}
+                                    colSpan={12}
                                     count={rows.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}

@@ -7,8 +7,8 @@ export default function dashboard() {
         <>
             <Toolbar />
             <Toolbar />
-            <Grid container>
-                <Grid item lg={12}>
+            <Grid container justifyContent={'center'}>
+                <Grid item lg={12} xs={11}>
                     <Box sx={{
                         width: '100%',
                         // height: '100px',

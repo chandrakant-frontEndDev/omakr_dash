@@ -1,45 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Grid, Toolbar, Paper, Box, TextField, Typography, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 export default function Home() {
-
-  function user(email, password) {
-    var data = new FormData();
-    data.append('email', email);
-    data.append('password', password);
-
-    console.log("user data", data);
-
-    const userData = {
-      method: 'post',
-      url: 'https://43cd-103-241-22-82.in.ngrok.io/admin-api/admin-login/',
-      data: data,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "multipart/form-data"
-      },
-    }
-
-    axios(userData).then(e => {
-      console.log(e)
-    }).catch(e => console.log(e))
-
-  }
-
-  const { reset, register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = ({ name, email, message, password, confirmPassword }) => {
-    console.log({
-      email,
-      password
-    });
-    // setLoaderState(true)
-
-    user(email, password)
-    reset()
-  }
 
   // ================================================================ API Login =============================================
 
@@ -51,9 +16,10 @@ export default function Home() {
     showPassword: false,
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  // const handleChange = (prop) => (event) => {
+  //   setValues({ ...values, [prop]: event.target.value });
+  //   setPasswordReq(false)
+  // };
 
   const handleClickShowPassword = () => {
     setValues({
@@ -68,11 +34,62 @@ export default function Home() {
 
   // ============================================ Login Validation =============================================
   const [EmailState, setEmailState] = useState(false)
+  const [PasswordState, setPasswordState] = useState(false)
+  const EmailVal = useRef(null)
+  const PasswordVal = useRef(null)
+
   const email = (e) => {
     let pattern = /[A-Za-z0-9]+@[A-Za-z0-9.-]+[A-Z|a-z]{2,}/ym
     let validEmail = pattern.test(e.target.value)
     setEmailState(!validEmail)
+    setEmailReq(false)
   }
+
+  const onPasswordChange = (e) => {
+    let pattern = /\S\S+/g
+    let ExtraSpaces = pattern.test(e.target.value)
+    setPasswordState(!ExtraSpaces)
+    setPasswordReq(false)
+  }
+
+  // ============================ For Empty Fields Error ======================================
+  const [EmailReq, setEmailReq] = useState(false)
+  const [PasswordReq, setPasswordReq] = useState(false)
+
+  const loginSubmit = () => {
+    let p = PasswordVal.current.value;
+    let e = EmailVal.current.value
+    if (e === '') {
+      setEmailReq(true)
+    }
+    if (p === '') {
+      setPasswordReq(true)
+    }
+
+    if (EmailState || PasswordState || e === '' || p === '') return
+
+    ////////API Goes Here
+    // console.log({ EmailState, PasswordState });
+    let data = new FormData();
+    data.append('email', e);
+    data.append('password', p);
+
+    // console.log("user data", {e,p});
+
+    const userData = {
+      method: 'post',
+      url: 'https://5a7f-103-241-22-82.ngrok.io/admin-api/admin-login/',
+      data: data,
+    }
+
+    axios(userData).then(e => {
+      console.log(e)
+    }).catch(e => {
+
+      console.log(e)
+    })
+  }
+  // ============================ For Empty Fields Error ======================================
   return (
     <>
       <Grid container justifyContent="center">
@@ -102,28 +119,24 @@ export default function Home() {
                 }}
                 noValidate
                 autoComplete="off"
-                onSubmit={handleSubmit(onSubmit)}
               >
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
                   Welcome to Omkar Development! 👋🏻
                 </Typography>
-                <TextField id="outlined-basic" label="Email" type={'email'} variant="outlined" error={EmailState} onChange={email} />
-                {/* <input type={'text'}  {...register("password", {
-                      required: 'Password is Required',
-                      minLength: {
-                        value: 6,
-                        message: "Minimum password length is 6"
-                      }
-                    })}/> */}
-                {/* {errors.email && (<small style={{ fontSize: "14px" }} className='text-danger contact_form_error'>{errors.email.message}</small>)} */}
-                {/* <TextField id="outlined-basic" label="Password" type={'password'} variant="outlined" /> */}
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <TextField id="outlined-basic" inputRef={EmailVal} label="Email" type={'email'} variant="outlined" error={EmailState} onChange={email} />
+                {EmailReq ?
+                  <Typography variant="caption" display="block" gutterBottom color={'red'}>
+                    This field is required
+                  </Typography> : ''
+                }
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" error={PasswordState}>
                   <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                   <OutlinedInput
+                    inputRef={PasswordVal}
                     id="outlined-adornment-password"
                     type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange('password')}
+                    
+                    onChange={onPasswordChange}
                     autoComplete="off"
                     endAdornment={
                       <InputAdornment position="end">
@@ -141,7 +154,12 @@ export default function Home() {
 
                   />
                 </FormControl>
-                <Button variant='contained' size='large' onClick={user}>Login</Button>
+                {PasswordReq ?
+                  <Typography variant="caption" display="block" gutterBottom color={'red'}>
+                    This field is required
+                  </Typography> : ''
+                }
+                <Button variant='contained' size='large' onClick={loginSubmit}>Login</Button>
               </Box>
             </Paper>
           </Box>

@@ -128,12 +128,12 @@ export default function electricity() {
     return (
 
         <Grid container spacing={2} justifyContent="center" >
-            <Grid item lg={12} xs={12}>
+            <Grid item lg={12} xs={11}>
                 <Toolbar />
                 <Toolbar />
                 <h1>Request List</h1>
             </Grid>
-            <Grid item lg={12} xs={12}>
+            <Grid item lg={12} xs={11}>
                 <TableContainer component={Paper}>
 
                     <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
